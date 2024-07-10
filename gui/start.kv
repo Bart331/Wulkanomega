@@ -1,0 +1,328 @@
+#:import utils kivy.utils
+
+MDBoxLayout:
+    orientation: "vertical"
+
+    MDTopAppBar:
+        id: main_top_bar
+        #title: "Wulkanomega"
+        #right_action_items: [["dots-vertical"], ["account-circle-outline"]]
+        MDBoxLayout:
+            padding: "20dp", 0, 0, "5dp"
+            #md_bg_color: 1, 0, 0, 1
+            orientation: "horizontal"
+            size_hint: None, None
+            size: root.width-50, "50dp"
+            
+            MDBoxLayout:
+                orientation: "vertical"
+                #md_bg_color: 0, 1, 0, 1
+                MDLabel:
+                    text: "Wulkanomega"
+                    font_size: 32
+                MDLabel:
+                    text: "Piątek, xx lipca 2024"
+                    
+            MDIconButton:
+                icon: "account-circle-outline"
+
+ 
+       
+    MDBottomNavigation:
+        id: main_nav
+        MDBottomNavigationItem:
+            name: "str_startowa"
+            text: "Start"
+            icon: "book-outline"
+            id: place_for_refresh
+
+            
+                    
+            MDBoxLayout:
+                id: start_main_box
+                MDScrollViewRefreshLayout:
+                    bar_width: 0
+                    id: refresh_layout
+                    refresh_callback: app.refresh_callback
+                    root_layout: root.ids.place_for_refresh
+                    MDList:
+                        padding: "21dp", "20dp", 0, "100dp"
+                        spacing: "20dp"
+#karta 3 elementy                       
+                        MDBoxLayout:
+                            spacing: "10dp"
+                            size_hint: None, None
+                            size: root.width-50, "50dp"
+                            #md_bg_color: app.theme_cls.primary_color
+#szczesliwy numerek                            
+                            MDCard:
+                                size_hint: None, None
+                                size: (root.width-30)/3, "50dp"
+                                #pos_hint: {"center_x": .18, "center_y": .9}
+                                #style: "elevated"
+                                MDBoxLayout:
+                                    MDIcon:
+                                        #icon: "auto-fix"
+                                        icon: "clover-outline"
+                                        pos_hint: {"center_y": .5}
+                                        padding: "15dp", 0, 0, 0
+                                    MDLabel:
+                                        text: app.today_lucky_number
+                                        font_style: "H5"
+                                        halign: "center"
+
+#wiadomosci
+                    
+                            MDCard:
+                                size_hint: None, None
+                                size: (root.width-170)/3, "50dp"
+                                #pos_hint: {"center_x": .5, "center_y": .9}
+                                BoxLayout:
+                                
+                                    MDIcon:
+                                        icon: "email-outline"
+                                        #badge_icon: f"numeric-{app.unread_messages_count}"
+                                        pos_hint: {"center_y": .5}
+                                        padding: "15dp", 0, 0, 0
+                                    MDLabel:
+                                        text: app.unread_messages_count
+                                        font_style: "H5"
+                                        halign: "center"
+#frekwencja          
+                            MDCard:
+                                size_hint: None, None
+                                size: (root.width-30)/3, "50dp"
+                                #pos_hint: {"center_x": .82, "center_y": .9}
+                                ripple_behavior: True
+                                on_release: root.ids.main_nav.switch_tab("frekwencja")
+                                BoxLayout:
+                                
+                                    MDIcon:
+                                        icon: "account-check"
+                                        pos_hint: {"center_y": .5}
+                                        padding: "10dp", 0, 0, 0
+                                    MDLabel:
+                                        text: app.procent_frekwencji
+                                        font_style: "H5"
+                                        halign: "center"
+
+#karta lekcji                            
+                        MDCard:
+                            size_hint: None, None
+                            size: (root.width-50), "200dp"
+                            pos_hint: None, None
+                            orientation: "vertical"
+                            on_release: root.ids.main_nav.switch_tab("plan_lekcji")
+                            MDBoxLayout:
+                                size_hint: None, None
+                                size: (root.width-50), "50dp"
+                                MDIcon:
+                                    icon: "calendar"
+                                    pos_hint: {"center_y": .5}
+                                    padding: "15dp", 0, 0, "5dp"
+                                MDLabel:
+                                    text: "Lekcje:"
+                                    padding: "10dp"
+                                    font_style: "H5"
+#najblizszy plan lekcji
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                padding: "20dp", 0 
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    MDLabel:
+                                        text: "Poprzednio: Matematyka"
+        
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    id: do_szerokosci_lekcji
+                                    MDLabel:
+                                        text: "Teraz: Historia"
+                                        size_hint: None, None
+                                        theme_text_color: "Custom"
+                                        text_color: utils.get_color_from_hex('#3399FF')
+                                        size: do_szerokosci_lekcji.width-jeszcze_lekcji.width, "30dp"
+                                    MDCard:
+                                        md_bg_color: utils.get_color_from_hex('#3399FF')
+                                        radius : 10
+                                        size_hint: None, None
+                                        width: jeszcze_lekcji.width+10
+                                        height: "30dp"
+                                        MDLabel:
+                                            id: jeszcze_lekcji
+                                            text: "jeszcze 36min"
+                                            adaptive_width: True
+                                            padding: "10dp", 0, 0, 0
+                                            theme_text_color: "Custom"
+                                            text_color: utils.get_color_from_hex('#202020')
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    padding: 0, "20dp", 0, 0
+                                    MDLabel:
+                                        text: "Nastepnie: Fizyka"
+
+#karta ostatnich ocen                          
+                        MDCard:
+                            size_hint: None, None
+                            size: (root.width-50), app.last_grades_height
+                            pos_hint: None, None
+                            orientation: "vertical"
+                            on_release: root.ids.main_nav.switch_tab("oceny")
+                            MDBoxLayout:
+                                #pos_hint: {"center_y": .85}
+                                size_hint: None, None
+                                size: (root.width-50), "50dp"
+                                #md_bg_color: app.theme_cls.primary_color
+                                MDIcon:
+                                    icon: "numeric-6-box-multiple-outline"
+                                    pos_hint: {"center_y": .5}
+                                    padding: "15dp", 0, 0, "5dp"
+                                MDLabel:
+                                    text: "Ostatnie oceny:"
+                                    padding: "10dp"
+                                    font_style: "H5"
+#ostatnie_oceny
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                padding: "20dp", 0
+                                id: last_grades_box
+                                
+#karta najblizsze sprawdziany                                
+                        MDCard:
+                            size_hint: None, None
+                            size: (root.width-50), app.najblizsze_spr_height
+                            pos_hint: None, None
+                            orientation: "vertical"
+                            MDBoxLayout:
+                                #pos_hint: {"center_y": .85}
+                                size_hint: None, None
+                                size: (root.width-50), "50dp"
+                                #md_bg_color: app.theme_cls.primary_color
+                                MDIcon:
+                                    icon: "notebook-outline" #file-outline
+                                    pos_hint: {"center_y": .5}
+                                    padding: "15dp", 0, 0, "5dp"
+                                MDLabel:
+                                    text: "Sprawdziany:"
+                                    padding: "10dp"
+                                    font_style: "H5"
+                                    
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                padding: "20dp", 0
+                                id: najblizsze_sprawdziany
+                                
+#najblisze sprawdiany                               
+                                
+
+                                
+                                    
+                                    
+                                    
+                                
+#zadanie domowe                                
+                        MDCard:
+                            size_hint: None, None
+                            size: (root.width-50), app.zadania_domowe_height
+                            pos_hint: None, None
+                            orientation: "vertical"
+                            MDBoxLayout:
+                                #pos_hint: {"center_y": .85}
+                                size_hint: None, None
+                                size: (root.width-50), "50dp"
+                                #md_bg_color: app.theme_cls.primary_color
+                                MDIcon:
+                                    icon: "home-outline"
+                                    pos_hint: {"center_y": .5}
+                                    padding: "15dp", 0, 0, "5dp"
+                                MDLabel:
+                                    text: "Zadania domowe:"
+                                    padding: "10dp"
+                                    font_style: "H5"
+                                    
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                padding: "20dp", 0
+                                id: zadania_domowe
+                                
+                                                                
+                                
+                                
+
+
+                                
+
+
+                
+#zakladka oceny               
+                
+                
+        MDBottomNavigationItem:
+            name: "oceny"
+            text: "Oceny"
+            icon: "numeric-6-box-multiple-outline"
+            on_tab_press: app.set_to_grades()
+            MDBoxLayout:
+                #orientation: "vertical"
+                #md_bg_color: 1, 0, 0, 1
+                MDBoxLayout:
+                    pos_hint: {"center_x": .5}
+                    MDTabs:
+                        tab_hint_x: True
+                        id: grades_tabs
+                        on_tab_switch: app.reset_grades_tab()
+                        background_color: utils.get_color_from_hex('#202020')
+                        
+#zakldka ocent teraz
+                        Tabs:
+                            title: "Szczegóły"
+                            
+                            
+                            MDLabel:
+                                text: "oceny"
+                                halign: "center"
+                                
+                                
+                                
+#zakladka ocen koncowych                               
+                        Tabs:
+                            title: "Posdumowanie"
+                            MDLabel:
+                                text: "oceny"
+                                halign: "center"
+                                
+                        Tabs:
+                            title: "Klasa"
+                            MDLabel:
+                                text: "Ta funkcja jest dostępna tylko po zalogowaniu przez e-mail i hasło"
+                                halign: "center"
+                                
+                
+#zakldka frekwencja                
+        MDBottomNavigationItem:
+            name: "frekwencja"
+            text: "Frekwencja"
+            icon: "account-check"
+            MDLabel:
+                text: "100%"
+                halign: "center"
+                
+                
+        MDBottomNavigationItem:
+            name: "plan_lekcji"
+            text: "Plan lekcji"
+            icon: "calendar"
+            MDLabel:
+                text: "matma\nsyf\ndziad\nzuki\nkomuch"
+                halign: "center"
+                
+        MDBottomNavigationItem:
+            name: "wiecej"
+            text: "Więcej"
+            icon: "menu"
+            MDLabel:
+                text: "bzdury"
+                halign: "center"
+                
+
+                
